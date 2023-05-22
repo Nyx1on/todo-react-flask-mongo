@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <div className="w-full h-16 flex items-center justify-between">
-      <h1 className="mx-4 my-4 text-gray-700 text-4xl font-bold flex">
+      <h1 className="mx-4 my-4 text-black text-4xl font-bold flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -21,8 +21,8 @@ const Header = () => {
         Todo List
       </h1>
       <a href="/">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded">
-          Login
+        <button className="bg-transparent bg-black bg-opacity-50 text-white px-4 py-2 mx-4 rounded">
+          <a href="">GitHub</a>
         </button>
       </a>
     </div>

@@ -1,47 +1,88 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TodoList from "../components/TodoList";
+import Loader from "../components/Loader";
+
+const RenderTodos = ({ todos }) => {
+  return todos.map((todo) => (
+    <TodoList todo={todo} key={todo.id} randomColor={getRandomColor()} />
+  ));
+};
+
+const getRandomColor = () => {
+  const colors = [
+    "bg-red-500",
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-yellow-500",
+    "bg-cyan-500",
+    "bg-fuchsia-500",
+    "bg-orange-500",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
+};
 
 const Todo = () => {
-  const [todo, setTodo] = useState("");
+  const [input, setInput] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   const handleOnChange = (e) => {
-    setTodo(e.target.value);
+    setInput(e.target.value);
     console.log(e.target.value);
   };
 
   const handleOnSubmit = async (e) => {
+    setLoading(true);
+
     e.preventDefault();
-    if (todo.trim() !== "") {
+    if (input.trim() !== "") {
       try {
-        const response = await axios.post("http://127.0.0.1:5000/createTodo", {
-          todo: todo,
+        const response = await axios.post("http://127.0.0.1:5000/todo/create", {
+          text: input,
         });
-        setTodo("");
+        setInput("");
         console.log(response.status);
-        console.log("Response ID:", response.data._id);
+        console.log("Response ID:", response.data.id);
         console.log("Response Text:", response.data.text);
+        fetchTodos();
       } catch (err) {
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     }
   };
 
+  const fetchTodos = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:5000/todo/fetch");
+      setTodos(response.data);
+      console.log(todos[0].text);
+    } catch (err) {
+      console.error;
+    }
+  };
+
   return (
-    <div className="my-36 mx-auto w-1/2">
-      <h1>Create a todo list</h1>
+    <div className="my-36 mx-auto w-1/2 bg-black bg-opacity-40 py-4 px-4 rounded-lg">
+      <h1 className="my-2 font-bold text-xl text-black">Create a todo list</h1>
       <form action="" className="flex flex-row" onSubmit={handleOnSubmit}>
         <input
           type="text"
-          name="todo"
+          name="input"
           placeholder="Add items"
-          value={todo}
+          value={input}
           onChange={handleOnChange}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 w-full"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-md font-bold rounded-lg opacity-50 focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 w-full"
         />
         <button
           type="submit"
-          className=" text-white bg-[#37c1f8] font-medium rounded-md text-sm sm:w-auto px-4 text-center"
+          className=" text-white bg-[#2bb3e9] font-medium rounded-md text-sm sm:w-auto px-4 text-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +100,21 @@ const Todo = () => {
           </svg>
         </button>
       </form>
-      <TodoList todo={todo} setTodo={setTodo} />
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <Loader />
+        </div>
+      ) : (
+        <>
+          {todos.length === 0 ? (
+            <div className="mt-4 mb-0 py-0 text-xl font-bold text-sm text-black">List is Empty.</div>
+          ) : (
+            <>
+              <RenderTodos todos={todos} />
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };
