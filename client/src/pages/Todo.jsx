@@ -3,25 +3,6 @@ import axios from "axios";
 import TodoList from "../components/TodoList";
 import Loader from "../components/Loader";
 
-const RenderTodos = ({ todos }) => {
-  return todos.map((todo) => (
-    <TodoList todo={todo} key={todo.id} randomColor={getRandomColor()} />
-  ));
-};
-
-const getRandomColor = () => {
-  const colors = [
-    "bg-red-500",
-    "bg-blue-500",
-    "bg-green-500",
-    "bg-yellow-500",
-    "bg-cyan-500",
-    "bg-fuchsia-500",
-    "bg-orange-500",
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
-
 const Todo = () => {
   const [input, setInput] = useState("");
   const [todos, setTodos] = useState([]);
@@ -30,6 +11,10 @@ const Todo = () => {
   useEffect(() => {
     fetchTodos();
   }, []);
+
+  const RenderTodos = ({ todos }) => {
+    return todos.map((todo) => <TodoList todo={todo} key={todo.id} />);
+  };
 
   const handleOnChange = (e) => {
     setInput(e.target.value);
@@ -69,8 +54,8 @@ const Todo = () => {
   };
 
   return (
-    <div className="my-36 mx-auto w-1/2 bg-black bg-opacity-40 py-4 px-4 rounded-lg">
-      <h1 className="my-2 font-bold text-xl text-black">Create a todo list</h1>
+    <div className="my-36 mx-auto w-1/2 bg-white bg-opacity-20 py-4 px-4 rounded-lg">
+      <h1 className="my-2 font-bold text-lg text-gray-800">Create a todo list of your own and hit the button to save.</h1>
       <form action="" className="flex flex-row" onSubmit={handleOnSubmit}>
         <input
           type="text"
@@ -107,7 +92,9 @@ const Todo = () => {
       ) : (
         <>
           {todos.length === 0 ? (
-            <div className="mt-4 mb-0 py-0 text-xl font-bold text-sm text-black">List is Empty.</div>
+            <div className="mt-4 mb-0 py-0 text-xl font-bold text-sm text-black">
+              List is Empty.
+            </div>
           ) : (
             <>
               <RenderTodos todos={todos} />

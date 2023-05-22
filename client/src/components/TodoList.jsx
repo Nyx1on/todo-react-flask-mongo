@@ -2,12 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import Loader from "./Loader";
 
-const TodoList = ({ todo, randomColor }) => {
+const TodoList = ({ todo }) => {
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [updatedTodo, setUpdatedTodo] = useState(todo.text);
+
+  const colors = [
+    "bg-red-500",
+    "bg-blue-500",
+    "bg-yellow-400",
+    "bg-sky-500",
+    "bg-yellow-500",
+    "bg-red-400",
+    "bg-green-500",
+    "bg-orange-400",
+  ];
+
+  const lastChar = parseInt(todo.id.slice(-1), 16); 
+  const randomColor = colors[lastChar % colors.length];
+
+  console.log(todo.id);
 
   const handleEdit = async (id) => {
     try {
@@ -17,34 +32,26 @@ const TodoList = ({ todo, randomColor }) => {
       });
       console.log(response.data.message);
       setEditMode(false);
+      window.location.reload()
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleDelete = async (id) => {
-    setLoading(false);
     try {
       const response = await axios.post("http://127.0.0.1:5000/todo/delete", {
         id: id,
       });
       console.log(response.data.message);
+      window.location.reload()
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const load = () => {
-    if (loading) {
-      return <Loader />;
     }
   };
 
   return (
     <>
-    {load()}
       <div
         className={`flex items-center justify-between my-2 ${randomColor} py-3 rounded-md shadow-lg transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-xl `}
       >

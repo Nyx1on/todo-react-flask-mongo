@@ -2,15 +2,15 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="w-full h-16 flex items-center justify-between">
-      <h1 className="mx-4 my-4 text-black text-4xl font-bold flex">
+    <div className="w-full h-16 flex items-center justify-between ">
+      <h1 className="mx-4 my-6 text-gray-900 text-5xl font-bold flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-10 h-10 mx-2"
+          className="w-12 h-12 mx-2"
         >
           <path
             strokeLinecap="round"

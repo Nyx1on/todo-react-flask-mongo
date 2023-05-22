@@ -24,6 +24,7 @@ db = client.todo_app;
 todo_collection = db.todo_app;
 
 
+# API to create a new to-do item
 @app.route('/todo/create',methods=['POST'])
 def create_todo():
     todo_text = request.json.get('text');
@@ -35,6 +36,8 @@ def create_todo():
     inserted_id = str(result.inserted_id);
     return jsonify({'id':inserted_id, 'text': todo['text']}), 201
 
+
+# API to list all to-do items
 @app.route('/todo/fetch',methods=['GET'])
 def get_todo():
     todos = todo_collection.find();
@@ -43,12 +46,13 @@ def get_todo():
         result.append({'id': str(todo['_id']), 'text': todo['text']})
     return jsonify(result),200
 
+# API to edit a to-do item
 @app.route('/todo/update',methods=['POST'])
 def update_todo():
     todo_id = request.json.get("id")
     updated_text = request.json.get("text")
     
-    if not todo_id or not updated_text:
+    if not todo_id:
         return jsonify({'error': 'Invalid data provided'}), 400
     
     result = todo_collection.update_one({'_id': ObjectId(todo_id)}, {'$set': {'text': updated_text}})
@@ -59,7 +63,7 @@ def update_todo():
         return jsonify({'error': 'Todo not found'}), 404
 
 
-
+# API to delete a to-do item
 @app.route('/todo/delete',methods=['POST'])
 def delete_todo():
     todo_id = request.json.get('id');
