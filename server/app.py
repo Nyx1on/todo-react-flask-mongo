@@ -8,7 +8,7 @@ from bson import ObjectId
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="dist", static_url_path="/")
 uri = os.environ.get('MONGO_URI')
 client = MongoClient(uri, server_api=ServerApi('1'))
 
@@ -23,6 +23,9 @@ except Exception as e:
 db = client.todo_app;
 todo_collection = db.todo_app;
 
+@app.route("/")
+def index():
+    return app.send_static_file("index.html");
 
 # API to create a new to-do item
 @app.route('/todo/create',methods=['POST'])
@@ -75,4 +78,4 @@ def delete_todo():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0')
