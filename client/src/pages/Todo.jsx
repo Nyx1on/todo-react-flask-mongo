@@ -34,7 +34,7 @@ const Todo = () => {
     e.preventDefault();
     if (input.trim() !== "" && todoType !== "") {
       try {
-        const response = await axios.post("http://127.0.0.1:5000/todo/create", {
+        const response = await axios.post("https://todoflask-s6vi.onrender.com/todo/create", {
           text: input,
           type: todoType,
         });
@@ -54,7 +54,7 @@ const Todo = () => {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/todo/fetch");
+      const response = await axios.get("https://todoflask-s6vi.onrender.com/todo/fetch");
       setTodos(response.data);
       console.log(todos[0].text);
     } catch (err) {

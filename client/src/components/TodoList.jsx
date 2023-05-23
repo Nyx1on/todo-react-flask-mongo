@@ -25,7 +25,7 @@ const TodoList = ({ todo }) => {
 
   const handleEdit = async (id) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/todo/update", {
+      const response = await axios.post("https://todoflask-s6vi.onrender.com/todo/update", {
         id: id,
         text: updatedTodo,
       });
@@ -39,7 +39,7 @@ const TodoList = ({ todo }) => {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/todo/delete", {
+      const response = await axios.post("https://todoflask-s6vi.onrender.com/todo/delete", {
         id: id,
       });
       console.log(response.data.message);
