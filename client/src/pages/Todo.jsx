@@ -9,10 +9,15 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [todoType, setTodoType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sortOrder, setSortOrder] = useState("");
 
   useEffect(() => {
     fetchTodos();
   }, []);
+
+  useEffect(() => {
+    sortTodos();
+  }, [sortOrder]);
 
   const RenderTodos = ({ todos }) => {
     return todos.map((todo) => <TodoList todo={todo} key={todo.id} />);
@@ -57,72 +62,114 @@ const Todo = () => {
     }
   };
 
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value);
+  };
+
+  const sortTodos = () => {
+    const sortedTodos = [...todos];
+    sortedTodos.sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a.text.localeCompare(b.text);
+      } else {
+        return b.text.localeCompare(a.text);
+      }
+    });
+    setTodos(sortedTodos);
+  };
+
   return (
-    <div className="my-24 mx-auto w-1/2 bg-black bg-opacity-20 py-4 px-4 rounded-lg">
-      <h1 className="my-2 font-medium text-lg text-gray-300">
-        Create a todo list of your own and hit the button to save.
-      </h1>
-      <form action="" className="flex flex-row" onSubmit={handleOnSubmit}>
-        <input
-          type="text"
-          name="input"
-          placeholder="Add items"
-          value={input}
-          onChange={handleOnChange}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-md font-bold rounded-lg opacity-50 focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 w-full"
-        />
-        <select
-          value={todoType}
-          onChange={(e) => setTodoType(e.target.value)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-md font-bold rounded-lg opacity-50 focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 ml-1"
-        >
-          <option value="">Select Type</option>
-          <option value="Work">Work</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Social">Social</option>
-          <option value="HouseChores">House Chores</option>
-          <option value="Other">Other</option>
-        </select>
-        <button
-          type="submit"
-          className="ml-1 text-white bg-[#2bb3e9] font-medium rounded-md text-sm sm:w-auto px-4 text-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-6 h-6"
+    <div className="flex mt-6">
+      <div className="mx-auto w-2/5 h-1/2 bg-white bg-opacity-10 py-4 px-4 rounded-lg">
+        <h1 className="my-2 font-medium font-poppin text-5xl text-[#66FCF1]">
+          Welcome Back {'"User"'} ,
+        </h1>
+        <h1 className="my-2 font-medium text-3xl text-[#66FCF1]">
+          Let's Get Productive!
+        </h1>
+        <p className="my-2 font-medium text-xl text-gray-300">
+          Create your personal todo list and stay organized.
+        </p>
+        <form action="" className="flex flex-row" onSubmit={handleOnSubmit}>
+          <input
+            type="text"
+            name="input"
+            placeholder="Add items"
+            value={input}
+            onChange={handleOnChange}
+            className="bg-white border border-gray-300 text-gray-900 text-md font-medium rounded-lg opacity-50 focus:ring-[#66FCF1] focus:border-[#66FCF1] outline-none p-3 w-full"
+          />
+          <select
+            value={todoType}
+            onChange={(e) => setTodoType(e.target.value)}
+            className="bg-white border border-gray-300 text-gray-900 text-md font-medium rounded-lg opacity-50 focus:ring-[#66FCF1] focus:border-[#66FCF1] outline-none p-3 ml-1"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-        </button>
-      </form>
-      <div className="mx-auto">
-        <CategoryLegend />
-      </div>
-      {loading ? (
-        <div className="flex justify-center items-center">
-          <Loader />
+            <option value="">Select Type</option>
+            <option value="Work">Work</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Social">Social</option>
+            <option value="HouseChores">House Chores</option>
+            <option value="Other">Other</option>
+          </select>
+          <button
+            type="submit"
+            className="ml-1 text-white bg-[#2bb3e9] font-medium rounded-md text-sm sm:w-auto px-4 text-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          </button>
+        </form>
+        <div className="mx-auto">
+          <CategoryLegend />
         </div>
-      ) : (
-        <>
-          {todos.length === 0 ? (
-            <div className="mt-4 mb-0 py-0 text-xl font-bold text-black text-center">
-              List is Empty.
-            </div>
-          ) : (
-            <>
-              <RenderTodos todos={todos} />
-            </>
-          )}
-        </>
-      )}
+        <div>
+          <select
+            value={sortOrder}
+            onChange={handleSortChange}
+            className="bg-white border border-gray-300 text-gray-900 text-md font-medium rounded-lg opacity-50 focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 ml-1"
+          >
+            <option value="">Sort By</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+      <div className="w-1/2 mx-auto">
+        <div className=" bg-white bg-opacity-10 py-4 px-4 rounded-lg">
+          <h1 className="my-2 font-medium font-poppin text-5xl text-[#66FCF1]">
+            Your Daily To-do's
+          </h1>
+        </div>
+        {loading ? (
+          <div className="flex justify-center items-center">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            {todos.length === 0 ? (
+              <div className="mt-4 mb-0 text-xl font-bold text-white text-center bg-white bg-opacity-10 py-4 px-4 rounded-lg">
+                List is Empty.
+              </div>
+            ) : (
+              <>
+                <RenderTodos todos={todos} />
+              </>
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

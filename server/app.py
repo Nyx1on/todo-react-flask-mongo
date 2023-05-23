@@ -53,16 +53,10 @@ def get_todo():
 def update_todo():
     todo_id = request.json.get("id")
     updated_text = request.json.get("text")
-    
-    if not todo_id:
-        return jsonify({'error': 'Invalid data provided'}), 400
-    
+
     result = todo_collection.update_one({'_id': ObjectId(todo_id)}, {'$set': {'text': updated_text}})
-    
-    if result.modified_count == 1:
-        return jsonify({'message': 'Todo updated successfully'}), 200
-    else:
-        return jsonify({'error': 'Todo not found'}), 404
+    return jsonify({'message': 'Todo updated successfully'}), 200
+
 
 
 # API to delete a to-do item

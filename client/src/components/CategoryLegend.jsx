@@ -2,17 +2,32 @@ import React from "react";
 
 const CategoryLegend = () => {
   return (
-    <div className="my-4 flex items-center font-regular justify-center">
-      <div className="w-4 h-4 bg-red-500 rounded-full mr-2 outline-none border-0"></div>
-      <span className="mr-4 text-sm text-gray-300 font-poppin">Work</span>
-      <div className="w-4 h-4 bg-yellow-400 rounded-full mr-2 outline-none border-0"></div>
-      <span className="mr-4 text-sm text-gray-300 font-poppin">Entertainment</span>
-      <div className="w-4 h-4 bg-green-500 rounded-full mr-2 outline-none border-0"></div>
-      <span className="mr-4 text-sm text-gray-300 font-poppin">Social</span>
-      <div className="w-4 h-4 bg-blue-500 rounded-full mr-2 outline-none border-0"></div>
-      <span className="mr-4 text-sm text-gray-300 font-poppin">House Chores</span>
-      <div className="w-4 h-4 bg-gray-600 rounded-full mr-2 outline-none border-0"></div>
-      <span className="text-sm text-gray-300 font-poppin">Other</span>
+    <div className="my-4 flex-col items-center font-regular">
+      <div className="flex my-2">
+        <div className="w-5 h-5 bg-blue-500 rounded-full mr-1 outline-none border-0"></div>
+        <span className="mr-5 text-sm text-gray-300 font-poppin">
+          House Chores
+        </span>
+      </div>
+      <div className="flex my-2">
+        <div className="w-5 h-5 bg-[#F64C72] rounded-full mr-1 outline-none border-0"></div>
+        <span className="mr-5 text-sm text-gray-300 font-poppin">
+          Entertainment
+        </span>
+      </div>
+      <div className="flex my-2">
+        <div className="w-5 h-5 bg-[#5CD23B] rounded-full mr-1 outline-none border-0"></div>
+        <span className="mr-5 text-sm text-gray-300 font-poppin">Social</span>
+      </div>
+
+      <div className="flex my-2">
+        <div className="w-5 h-5 bg-red-500 rounded-full mr-1 outline-none border-0"></div>
+        <span className="mr-5 text-sm text-gray-300 font-poppin">Work</span>
+      </div>
+      <div className="flex my-2">
+        <div className="w-5 h-5 bg-[#553D67] rounded-full mr-1 outline-none border-0"></div>
+        <span className="text-sm text-gray-300 font-poppin">Other</span>
+      </div>
     </div>
   );
 };
