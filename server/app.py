@@ -28,13 +28,15 @@ todo_collection = db.todo_app;
 @app.route('/todo/create',methods=['POST'])
 def create_todo():
     todo_text = request.json.get('text');
-    if not todo_text:
+    todo_type = request.json.get('type');
+
+    if not todo_text and not todo_type:
         return jsonify({'error': "Error creating todo"}),400
     
-    todo = {'text': todo_text}
+    todo = {'text': todo_text, 'type': todo_type}
     result = todo_collection.insert_one(todo);
     inserted_id = str(result.inserted_id);
-    return jsonify({'id':inserted_id, 'text': todo['text']}), 201
+    return jsonify({'id':inserted_id, 'text': todo['text'], 'type': todo['type']}), 201
 
 
 # API to list all to-do items
@@ -43,7 +45,7 @@ def get_todo():
     todos = todo_collection.find();
     result = [];
     for todo in todos:
-        result.append({'id': str(todo['_id']), 'text': todo['text']})
+        result.append({'id': str(todo['_id']), 'text': todo['text'], 'type': todo['type']})
     return jsonify(result),200
 
 # API to edit a to-do item

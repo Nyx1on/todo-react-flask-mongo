@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TodoList from "../components/TodoList";
 import Loader from "../components/Loader";
+import CategoryLegend from "../components/CategoryLegend";
 
 const Todo = () => {
   const [input, setInput] = useState("");
   const [todos, setTodos] = useState([]);
+  const [todoType, setTodoType] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -25,10 +27,11 @@ const Todo = () => {
     setLoading(true);
 
     e.preventDefault();
-    if (input.trim() !== "") {
+    if (input.trim() !== "" && todoType !== "") {
       try {
         const response = await axios.post("http://127.0.0.1:5000/todo/create", {
           text: input,
+          type: todoType,
         });
         setInput("");
         console.log(response.status);
@@ -37,10 +40,11 @@ const Todo = () => {
         fetchTodos();
       } catch (err) {
         console.log(err);
-      } finally {
-        setLoading(false);
       }
+    } else {
+      alert("Please enter the text and select the item type.");
     }
+    setLoading(false);
   };
 
   const fetchTodos = async () => {
@@ -54,8 +58,10 @@ const Todo = () => {
   };
 
   return (
-    <div className="my-36 mx-auto w-1/2 bg-white bg-opacity-20 py-4 px-4 rounded-lg">
-      <h1 className="my-2 font-bold text-lg text-gray-800">Create a todo list of your own and hit the button to save.</h1>
+    <div className="my-24 mx-auto w-1/2 bg-black bg-opacity-20 py-4 px-4 rounded-lg">
+      <h1 className="my-2 font-medium text-lg text-gray-300">
+        Create a todo list of your own and hit the button to save.
+      </h1>
       <form action="" className="flex flex-row" onSubmit={handleOnSubmit}>
         <input
           type="text"
@@ -65,9 +71,21 @@ const Todo = () => {
           onChange={handleOnChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-md font-bold rounded-lg opacity-50 focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 w-full"
         />
+        <select
+          value={todoType}
+          onChange={(e) => setTodoType(e.target.value)}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-md font-bold rounded-lg opacity-50 focus:ring-[#37c1f8] focus:border-[#37c1f8] outline-none p-3 ml-1"
+        >
+          <option value="">Select Type</option>
+          <option value="Work">Work</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Social">Social</option>
+          <option value="HouseChores">House Chores</option>
+          <option value="Other">Other</option>
+        </select>
         <button
           type="submit"
-          className=" text-white bg-[#2bb3e9] font-medium rounded-md text-sm sm:w-auto px-4 text-center"
+          className="ml-1 text-white bg-[#2bb3e9] font-medium rounded-md text-sm sm:w-auto px-4 text-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -85,6 +103,9 @@ const Todo = () => {
           </svg>
         </button>
       </form>
+      <div className="mx-auto">
+        <CategoryLegend />
+      </div>
       {loading ? (
         <div className="flex justify-center items-center">
           <Loader />
@@ -92,7 +113,7 @@ const Todo = () => {
       ) : (
         <>
           {todos.length === 0 ? (
-            <div className="mt-4 mb-0 py-0 text-xl font-bold text-sm text-black">
+            <div className="mt-4 mb-0 py-0 text-xl font-bold text-black text-center">
               List is Empty.
             </div>
           ) : (

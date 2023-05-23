@@ -4,6 +4,7 @@ export default {
   theme: {
     fontFamily: {
       lato: ['Lato', 'sans-serif'],
+      poppin: ['Poppins', 'sans-serif'],
     },
     extend: {},
   },

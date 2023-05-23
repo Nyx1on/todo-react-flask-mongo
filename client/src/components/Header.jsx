@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <div className="w-full h-16 flex items-center justify-between ">
-      <h1 className="mx-4 my-6 text-gray-900 text-5xl font-bold flex">
+      <h1 className="mx-4 my-6 text-gray-300 text-5xl font-bold flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

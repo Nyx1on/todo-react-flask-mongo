@@ -8,19 +8,15 @@ const TodoList = ({ todo }) => {
   const [editMode, setEditMode] = useState(false);
   const [updatedTodo, setUpdatedTodo] = useState(todo.text);
 
-  const colors = [
-    "bg-red-500",
-    "bg-blue-500",
-    "bg-yellow-400",
-    "bg-sky-500",
-    "bg-yellow-500",
-    "bg-red-400",
-    "bg-green-500",
-    "bg-orange-400",
-  ];
+  const colors = {
+    Work: "bg-red-500",
+    Entertainment: "bg-yellow-400",
+    Social: "bg-green-500",
+    HouseChores: "bg-blue-500",
+    Other: "bg-gray-600",
+  };
 
-  const lastChar = parseInt(todo.id.slice(-1), 16); 
-  const randomColor = colors[lastChar % colors.length];
+  const randomColor = colors[todo.type];
 
   console.log(todo.id);
 
@@ -32,7 +28,7 @@ const TodoList = ({ todo }) => {
       });
       console.log(response.data.message);
       setEditMode(false);
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +40,7 @@ const TodoList = ({ todo }) => {
         id: id,
       });
       console.log(response.data.message);
-      window.location.reload()
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
