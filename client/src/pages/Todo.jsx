@@ -131,7 +131,7 @@ const Todo = () => {
             </svg>
           </button>
         </form>
-        <div className="mx-auto">
+        <div className="mx-4">
           <CategoryLegend />
         </div>
         <div>
